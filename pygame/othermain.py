@@ -26,6 +26,47 @@ triangle2 = [(10, 10),
             (20, 40),
             (5, 45)]
 
+# Colors
+NAVY = (0, int(0.1*255), int(0.2*255))
+AQUA = (int(0.3*255), 255, int(1.0*255))
+SUNFLOWER = (255, 255, int(0.6*255))
+SWEETPEA = (255, int(0.7*255), int(0.75*255))
+TURQUOISE = (0, 255, int(0.7*255))
+
+def clamp(v, vmin, vmax):
+    return max(vmin, min(vmax, v))
+
+def mix(c1, c2, t):
+    return [int(c1[i] * (1-t) + c2[i] * t) for i in range(3)]
+
+def step(edge, x):
+    return 1.0 if x >= edge else 0.0
+
+def smoothstep(edge0, edge1, x):
+    t = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0)
+    return t * t * (3 - 2 * t)
+
+def easeInOutCubic(t):
+    t = t * 2
+    if t < 1:
+        return 0.5 * t * t * t
+    else:
+        t -= 2
+        return 0.5 * (t * t * t + 2)
+
+def linearstep(begin, end, t):
+    return clamp((t - begin)/(end - begin), 0.0, 1.0)
+
+def circle(p, radius):
+    return math.sqrt(p[0]*p[0] + p[1]*p[1]) - radius
+
+def circlePlot(p, radius):
+    return 1.0 - smoothstep(0.0, 1.0/width, circle(p, radius))
+
+def clockWipe(p, t):
+    a = math.atan2(-p[0], -p[1])
+    return 1.0 if t*2*math.pi > a + math.pi else 0.0
+
 def shader(time=0):
     for x in range(width):
         for y in range(height):

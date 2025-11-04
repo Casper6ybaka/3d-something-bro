@@ -14,6 +14,9 @@ display_buffer = [[0, 0, 0] for _ in range(width*height)]
 triangle = [(10, 10),
             (40, 20),
             (20, 40)]
+triangle2 = [(10, 10),
+            (20, 40),
+            (5, 45)]
 
 def set_at(pos, color):
     x, y = int(pos[0]), int(pos[1])
@@ -43,10 +46,10 @@ def get_triangle(vectors):
                 inside(edge_function(b, c, P)) and
                 inside(edge_function(c, a, P))):
                 pixels.append(P)
-    print(pixels)
     return pixels
 
 triangle_boundingbox = get_triangle(triangle)
+triangle_boundingbox2 = get_triangle(triangle2)
     
 while True:
     for event in pygame.event.get():
@@ -64,6 +67,8 @@ while True:
     dwin.blit(pygame.image.frombuffer(display_data, (width, height), "RGB"), (0, 0))
     for pos in triangle_boundingbox: # Triangle's background box
         dwin.set_at(pos, (150, 150, 150))
+    for pos in triangle_boundingbox2: # Triangle's background box
+        dwin.set_at(pos, (80, 80, 80))
     # pygame.draw.polygon(dwin, (100, 0, 0), triangle)
 
     transformed_display = pygame.transform.scale(dwin, win.get_size())
